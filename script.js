@@ -1,4 +1,4 @@
-/* script.js - Niveditha Wall Art Portfolio */
+/* script.js - S. Niveditha S Wall Art Portfolio */
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const area = width * height;
             const price = summaryPrice.innerText;
             
-            contactFormDetails.value = `Hi Niveditha, I calculated an estimate using your Wall Configurator! \n- Wall Dimensions: ${width}ft x ${height}ft (${area} sq.ft)\n- Art Style: ${styleName}\n- Estimated Quote: ${price}\n\nLet's discuss my custom concept sketches!`;
+            contactFormDetails.value = `Hi S. Niveditha S, I calculated an estimate using your Wall Configurator! \n- Wall Dimensions: ${width}ft x ${height}ft (${area} sq.ft)\n- Art Style: ${styleName}\n- Estimated Quote: ${price}\n\nLet's discuss my custom concept sketches!`;
             
             // Scroll to contact form smoothly
             document.getElementById("contact").scrollIntoView({ behavior: 'smooth' });
@@ -451,7 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 submitBtn.innerHTML = originalText;
                 
                 // Show Success Msg
-                formFeedback.innerText = "Thank you! Niveditha will review your space sketches and contact you within 24 hours.";
+                formFeedback.innerText = "Thank you! S. Niveditha S will review your space sketches and contact you within 24 hours.";
                 formFeedback.className = "form-feedback success";
                 
                 // Clear Form
