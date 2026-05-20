@@ -2535,21 +2535,20 @@ input:focus, select:focus, textarea:focus {
         border-bottom: 1px solid var(--border-color);
     }
 
-    /* ---- HERO BACKGROUND — show the face on mobile ---- */
+    /* ---- HERO BACKGROUND — face on RIGHT, text on LEFT ---- */
     .hero-section {
-        /* Pan to right and shift vertical to upper portion where face is */
-        background-position: right 20%;
+        background-position: 75% 15%;
+        background-size: 130%;
     }
 
-    /* Lighter overlay on mobile: keep left side dark for text readability,
-       open up the right side so Niveditha's face is clearly visible */
+    /* Left side dark (text readable), right side lighter (face visible) */
     .hero-section::before {
         background: linear-gradient(
             to right,
-            rgba(10, 10, 9, 0.88) 0%,
-            rgba(10, 10, 9, 0.70) 45%,
-            rgba(10, 10, 9, 0.25) 75%,
-            rgba(10, 10, 9, 0.10) 100%
+            rgba(10, 10, 9, 0.92) 0%,
+            rgba(10, 10, 9, 0.75) 35%,
+            rgba(10, 10, 9, 0.35) 65%,
+            rgba(10, 10, 9, 0.12) 100%
         );
     }
 
