@@ -1,4 +1,4 @@
-/* script.js - S. Niveditha S Wall Art Portfolio */
+/* script.js - Niveditha S. Wall Art Portfolio */
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const area = width * height;
             const price = summaryPrice.innerText;
             
-            contactFormDetails.value = `Hi S. Niveditha S, I calculated an estimate using your Wall Configurator! \n- Wall Dimensions: ${width}ft x ${height}ft (${area} sq.ft)\n- Art Style: ${styleName}\n- Estimated Quote: ${price}\n\nLet's discuss my custom concept sketches!`;
+            contactFormDetails.value = `Hi Niveditha S., I calculated an estimate using your Wall Configurator! \n- Wall Dimensions: ${width}ft x ${height}ft (${area} sq.ft)\n- Art Style: ${styleName}\n- Estimated Quote: ${price}\n\nLet's discuss my custom concept sketches!`;
             
             // Scroll to contact form smoothly
             document.getElementById("contact").scrollIntoView({ behavior: 'smooth' });
@@ -486,7 +486,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         
                         // Show Success Msg
                         formFeedback.className = "form-feedback success";
-                        formFeedback.innerText = "Thank you! Your consultation request has been sent. S. Niveditha S will review your space sketches and contact you within 24 hours.";
+                        formFeedback.innerText = "Thank you! Your consultation request has been sent. Niveditha S. will review your space sketches and contact you within 24 hours.";
                         
                         // Clear Form
                         contactForm.reset();
@@ -513,7 +513,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     // Show Demo Success Msg
                     formFeedback.className = "form-feedback success";
-                    formFeedback.innerText = "Thank you! S. Niveditha S will review your space sketches and contact you within 24 hours. (Demo Mode: Please configure EmailJS credentials in script.js)";
+                    formFeedback.innerText = "Thank you! Niveditha S. will review your space sketches and contact you within 24 hours. (Demo Mode: Please configure EmailJS credentials in script.js)";
                     
                     // Clear Form
                     contactForm.reset();
