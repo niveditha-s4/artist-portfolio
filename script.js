@@ -476,7 +476,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     from_phone: document.getElementById("client-phone").value,
                     mural_type: document.getElementById("mural-type").value,
                     message: document.getElementById("mural-details").value,
-                    to_email: "126003189@sastra.ac.in"
+                    to_email: "126003189@sastra.ac.in",
+                    // Aliases used by EmailJS Auto-Reply template variables
+                    name: document.getElementById("client-name").value,
+                    email: document.getElementById("client-email").value
                 };
 
                 emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
