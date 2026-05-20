@@ -430,7 +430,20 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // --- BESPOKE CONSULTATION FORM SUBMISSION ---
+    // --- BESPOKE CONSULTATION FORM SUBMISSION (EMAILJS INTEGRATION) ---
+    // EmailJS API Credentials Configuration.
+    // Replace these placeholders with your actual EmailJS credentials at https://dashboard.emailjs.com/
+    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";   // e.g. "user_xxxxxxxxxxxxxxxx" or "xxxxxxxxxxxxxxxx"
+    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";   // e.g. "service_xxxxxxx"
+    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // e.g. "template_xxxxxxx"
+
+    // Initialize EmailJS browser SDK if it has loaded
+    if (typeof emailjs !== "undefined" && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+        emailjs.init({
+            publicKey: EMAILJS_PUBLIC_KEY,
+        });
+    }
+
     const contactForm = document.getElementById("contact-form");
     const formFeedback = document.getElementById("form-feedback");
     
@@ -441,28 +454,76 @@ document.addEventListener("DOMContentLoaded", () => {
             const submitBtn = contactForm.querySelector("button[type='submit']");
             const originalText = submitBtn.innerHTML;
             
+            // Reset feedback style state
+            formFeedback.style.display = ""; 
+            formFeedback.className = "form-feedback";
+            formFeedback.innerText = "";
+            
             // Loading feedback
             submitBtn.disabled = true;
             submitBtn.innerHTML = `<span>Scheduling consultation...</span> <i class="fa-solid fa-spinner fa-spin"></i>`;
             
-            // Mock server timeout response
-            setTimeout(() => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-                
-                // Show Success Msg
-                formFeedback.innerText = "Thank you! S. Niveditha S will review your space sketches and contact you within 24 hours.";
-                formFeedback.className = "form-feedback success";
-                
-                // Clear Form
-                contactForm.reset();
-                
-                // Fade feedback after 6 seconds
+            const isEmailJSConfigured = 
+                EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY" && 
+                EMAILJS_SERVICE_ID !== "YOUR_SERVICE_ID" && 
+                EMAILJS_TEMPLATE_ID !== "YOUR_TEMPLATE_ID";
+
+            if (isEmailJSConfigured && typeof emailjs !== "undefined") {
+                // Collect parameters mapped to standard EmailJS placeholders
+                const templateParams = {
+                    from_name: document.getElementById("client-name").value,
+                    from_email: document.getElementById("client-email").value,
+                    from_phone: document.getElementById("client-phone").value,
+                    mural_type: document.getElementById("mural-type").value,
+                    message: document.getElementById("mural-details").value,
+                    to_email: "nivisun4@gmail.com"
+                };
+
+                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+                    .then(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                        
+                        // Show Success Msg
+                        formFeedback.className = "form-feedback success";
+                        formFeedback.innerText = "Thank you! Your consultation request has been sent. S. Niveditha S will review your space sketches and contact you within 24 hours.";
+                        
+                        // Clear Form
+                        contactForm.reset();
+                        
+                        // Fade feedback after 6 seconds
+                        setTimeout(() => {
+                            formFeedback.style.display = "none";
+                        }, 6000);
+                    })
+                    .catch((error) => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                        
+                        // Show Error Msg
+                        formFeedback.className = "form-feedback error";
+                        formFeedback.innerText = "Oops! Something went wrong while sending your request. Please try again or email directly to nivisun4@gmail.com.";
+                        console.error("EmailJS Error details:", error);
+                    });
+            } else {
+                // Fallback to beautiful Mock/Demo Mode if EmailJS credentials are not configured yet
                 setTimeout(() => {
-                    formFeedback.style.display = "none";
-                }, 6000);
-                
-            }, 1800);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    
+                    // Show Demo Success Msg
+                    formFeedback.className = "form-feedback success";
+                    formFeedback.innerText = "Thank you! S. Niveditha S will review your space sketches and contact you within 24 hours. (Demo Mode: Please configure EmailJS credentials in script.js)";
+                    
+                    // Clear Form
+                    contactForm.reset();
+                    
+                    // Fade feedback after 6 seconds
+                    setTimeout(() => {
+                        formFeedback.style.display = "none";
+                    }, 6000);
+                }, 1800);
+            }
         });
     }
 });
