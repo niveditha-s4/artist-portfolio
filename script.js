@@ -476,7 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     from_phone: document.getElementById("client-phone").value,
                     mural_type: document.getElementById("mural-type").value,
                     message: document.getElementById("mural-details").value,
-                    to_email: "nivisun4@gmail.com"
+                    to_email: "126003189@sastra.ac.in"
                 };
 
                 emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
@@ -502,7 +502,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         
                         // Show Error Msg
                         formFeedback.className = "form-feedback error";
-                        formFeedback.innerText = "Oops! Something went wrong while sending your request. Please try again or email directly to nivisun4@gmail.com.";
+                        formFeedback.innerText = "Oops! Something went wrong while sending your request. Please try again or email directly to 126003189@sastra.ac.in.";
                         console.error("EmailJS Error details:", error);
                     });
             } else {
