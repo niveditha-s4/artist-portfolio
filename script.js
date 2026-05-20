@@ -433,9 +433,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- BESPOKE CONSULTATION FORM SUBMISSION (EMAILJS INTEGRATION) ---
     // EmailJS API Credentials Configuration.
     // Replace these placeholders with your actual EmailJS credentials at https://dashboard.emailjs.com/
-    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";   // e.g. "user_xxxxxxxxxxxxxxxx" or "xxxxxxxxxxxxxxxx"
-    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";   // e.g. "service_xxxxxxx"
-    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // e.g. "template_xxxxxxx"
+    const EMAILJS_PUBLIC_KEY = "4yl72eTXisTKgd7io";
+    const EMAILJS_SERVICE_ID = "service_6c7boyj";
+    const EMAILJS_TEMPLATE_ID = "template_my26poj";
 
     // Initialize EmailJS browser SDK if it has loaded
     if (typeof emailjs !== "undefined" && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
