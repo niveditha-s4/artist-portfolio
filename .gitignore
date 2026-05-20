@@ -1,0 +1,9 @@
+# System files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Agent / IDE files
+.agent/
+.antigravitycli
+.gemini/
