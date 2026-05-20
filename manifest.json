@@ -12,7 +12,13 @@
   "categories": ["art", "design", "lifestyle"],
   "icons": [
     {
-      "src": "Assets/Front page.png",
+      "src": "Assets/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "Assets/favicon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
