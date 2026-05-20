@@ -2535,6 +2535,11 @@ input:focus, select:focus, textarea:focus {
         border-bottom: 1px solid var(--border-color);
     }
 
+    /* ---- HERO BACKGROUND — show the face on mobile ---- */
+    .hero-section {
+        background-position: 78% top;
+    }
+
     .nav-logo {
         font-size: 1.15rem;
     }

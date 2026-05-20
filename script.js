@@ -94,7 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Parallax: background position on the section drifts slower than scroll
-        if (heroSection && scrollPos < viewH * 1.4) {
+        // Disabled on mobile so CSS background-position (showing the face) is preserved
+        if (heroSection && scrollPos < viewH * 1.4 && window.innerWidth > 768) {
             heroSection.style.backgroundPosition = `center calc(0px + ${scrollPos * 0.35}px)`;
         }
 
