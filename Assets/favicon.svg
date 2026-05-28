@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Dark background with rounded corners -->
+  <rect width="32" height="32" rx="7" fill="#151413"/>
+
+  <!-- Paintbrush handle (diagonal) -->
+  <rect x="15" y="2" width="4" height="16" rx="2" fill="#C3A478" transform="rotate(15 17 10)"/>
+
+  <!-- Brush ferrule (metal band) -->
+  <rect x="14.5" y="14" width="5" height="3" rx="0.5" fill="#8A7355" transform="rotate(15 17 15)"/>
+
+  <!-- Brush bristles (tapered tip) -->
+  <ellipse cx="12" cy="22" rx="3.5" ry="5" fill="#C3A478" transform="rotate(15 12 22)"/>
+  <ellipse cx="12" cy="24" rx="2" ry="3" fill="#E8D5B0" transform="rotate(15 12 24)"/>
+
+  <!-- Accent brush stroke dot below -->
+  <circle cx="24" cy="26" r="3" fill="#C3A478" opacity="0.7"/>
+</svg>
