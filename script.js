@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         startHero();
     }
 
+
     // --- CUSTOM CURSOR ---
     const cursor = document.getElementById("custom-cursor");
     const follower = document.getElementById("custom-cursor-follower");
@@ -93,11 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
             header.classList.remove("scrolled");
         }
 
-        // Parallax: background position on the section drifts slower than scroll
-        // Disabled on mobile so CSS background-position (showing the face) is preserved
-        if (heroSection && scrollPos < viewH * 1.4 && window.innerWidth > 768) {
-            heroSection.style.backgroundPosition = `center calc(0px + ${scrollPos * 0.35}px)`;
-        }
+        // Parallax disabled — background is on ::after pseudo-element (not targetable via JS)
 
         // Fade & lift hero content as user scrolls into page
         if (heroContentWrap && scrollPos < viewH) {
@@ -144,52 +141,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- SCROLL REVEAL INTERSECTING OBSERVER ---
     const reveals = document.querySelectorAll(".scroll-reveal, .animate-slide-in-left, .animate-slide-in-right");
-    
+
     const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add("active");
-                
-                // If it is the about section, trigger the stats counter animation
-                if (entry.target.id === "about") {
-                    startCounters();
-                }
-                
-                observer.unobserve(entry.target); // Reveal once
+                observer.unobserve(entry.target);
             }
         });
     }, {
         threshold: 0.15,
         rootMargin: "0px 0px -50px 0px"
     });
-    
+
     reveals.forEach(rev => {
         revealObserver.observe(rev);
     });
 
-    // Trigger hero stats animation manually on startup
-    function startCounters() {
-        const counters = document.querySelectorAll(".stat-num");
-        counters.forEach(counter => {
-            // Guard to prevent double counter runs
-            if (counter.classList.contains("counted")) return;
-            counter.classList.add("counted");
+    // --- STAT COUNTERS: observe the stats box directly ---
+    function runCounter(counter) {
+        if (counter.classList.contains("counted")) return;
+        counter.classList.add("counted");
+        const target = +counter.getAttribute("data-val");
+        let count = 0;
+        const steps = 60;
+        const increment = target / steps;
+        const tick = () => {
+            count += increment;
+            if (count < target) {
+                counter.innerText = Math.floor(count);
+                setTimeout(tick, 20);
+            } else {
+                counter.innerText = target;
+            }
+        };
+        tick();
+    }
 
-            const target = +counter.getAttribute("data-val");
-            let count = 0;
-            const speed = Math.max(1, Math.ceil(target / 50)); // speed control
-            
-            const updateCount = () => {
-                count += speed;
-                if (count < target) {
-                    counter.innerText = Math.floor(count);
-                    setTimeout(updateCount, 25);
-                } else {
-                    counter.innerText = target;
+    function startCounters() {
+        document.querySelectorAll(".stat-num").forEach(runCounter);
+    }
+
+    const statsBox = document.getElementById("about-stats");
+    if (statsBox) {
+        const statsObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    startCounters();
+                    obs.unobserve(entry.target);
                 }
-            };
-            updateCount();
-        });
+            });
+        }, { threshold: 0.4 });
+        statsObserver.observe(statsBox);
     }
 
     // --- PORTFOLIO FILTER SYSTEM ---
@@ -229,53 +232,55 @@ document.addEventListener("DOMContentLoaded", () => {
     
     let selectedRate = 80; // default minimal rate
     
-    // Style card click event toggling
-    styleCards.forEach(card => {
-        card.addEventListener("click", () => {
-            styleCards.forEach(c => c.classList.remove("active"));
-            card.classList.add("active");
-            
-            selectedRate = +card.getAttribute("data-rate");
-            const style = card.getAttribute("data-style");
-            
-            // Adjust visualizer artwork mapping to represent selected styles
-            if (style === "minimal") {
-                visualizerArtwork.style.backgroundImage = "url('Assets/Wall art.png')";
-                visualizerArtwork.style.filter = "grayscale(1) contrast(1.2)";
-            } else if (style === "detailed") {
-                visualizerArtwork.style.backgroundImage = "url('Assets/art in the wash basin.png')";
-                visualizerArtwork.style.filter = "none";
-            } else if (style === "fantasy") {
-                visualizerArtwork.style.backgroundImage = "url('Assets/Harry potter wall art.png')";
-                visualizerArtwork.style.filter = "brightness(0.9) saturate(1.1)";
-            }
-            
-            calculateEstimate();
+    if (widthInput && heightInput && styleCards.length > 0) {
+        // Style card click event toggling
+        styleCards.forEach(card => {
+            card.addEventListener("click", () => {
+                styleCards.forEach(c => c.classList.remove("active"));
+                card.classList.add("active");
+                
+                selectedRate = +card.getAttribute("data-rate");
+                const style = card.getAttribute("data-style");
+                
+                // Adjust visualizer artwork mapping to represent selected styles
+                if (style === "minimal" && visualizerArtwork) {
+                    visualizerArtwork.style.backgroundImage = "url('Assets/Wall art.png')";
+                    visualizerArtwork.style.filter = "grayscale(1) contrast(1.2)";
+                } else if (style === "detailed" && visualizerArtwork) {
+                    visualizerArtwork.style.backgroundImage = "url('Assets/Wash basin Art.jpeg')";
+                    visualizerArtwork.style.filter = "none";
+                } else if (style === "fantasy" && visualizerArtwork) {
+                    visualizerArtwork.style.backgroundImage = "url('Assets/Harry potter wall art.png')";
+                    visualizerArtwork.style.filter = "brightness(0.9) saturate(1.1)";
+                }
+                
+                calculateEstimate();
+            });
         });
-    });
-    
-    function calculateEstimate() {
-        const width = +widthInput.value || 10;
-        const height = +heightInput.value || 8;
         
-        const area = width * height;
-        const price = area * selectedRate;
+        function calculateEstimate() {
+            const width = +widthInput.value || 10;
+            const height = +heightInput.value || 8;
+            
+            const area = width * height;
+            const price = area * selectedRate;
+            
+            // Format outputs
+            if (summaryArea) summaryArea.innerText = `${area} Sq. Ft`;
+            if (summaryPrice) summaryPrice.innerText = `₹${price.toLocaleString()}`;
+            if (dimensionsTag) dimensionsTag.innerText = `${width}' x ${height}' (${area} sq.ft)`;
+            
+            // Dynamically adjust scale ratio of visualizer canvas
+            // Reference: Human is static on the left. The mural canvas width/height stretches based on width/height ratio.
+            if (visualizerArtwork) {
+                const widthRatio = (width / 30) * 100; // max 30ft width as scale reference
+                const heightRatio = (height / 15) * 80 + 10; // max 15ft height as scale reference
+                
+                visualizerArtwork.style.width = `${Math.min(Math.max(widthRatio, 35), 75)}%`;
+                visualizerArtwork.style.height = `${Math.min(Math.max(heightRatio, 40), 95)}%`;
+            }
+        }
         
-        // Format outputs
-        summaryArea.innerText = `${area} Sq. Ft`;
-        summaryPrice.innerText = `₹${price.toLocaleString()}`;
-        dimensionsTag.innerText = `${width}' x ${height}' (${area} sq.ft)`;
-        
-        // Dynamically adjust scale ratio of visualizer canvas
-        // Reference: Human is static on the left. The mural canvas width/height stretches based on width/height ratio.
-        const widthRatio = (width / 30) * 100; // max 30ft width as scale reference
-        const heightRatio = (height / 15) * 80 + 10; // max 15ft height as scale reference
-        
-        visualizerArtwork.style.width = `${Math.min(Math.max(widthRatio, 35), 75)}%`;
-        visualizerArtwork.style.height = `${Math.min(Math.max(heightRatio, 40), 95)}%`;
-    }
-    
-    if (widthInput && heightInput) {
         widthInput.addEventListener("input", calculateEstimate);
         heightInput.addEventListener("input", calculateEstimate);
         calculateEstimate(); // initial boot calculation
@@ -285,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const applyEstimateBtn = document.getElementById("apply-estimate-btn");
     const contactFormDetails = document.getElementById("mural-details");
     
-    if (applyEstimateBtn && contactFormDetails) {
+    if (applyEstimateBtn && contactFormDetails && widthInput && heightInput && summaryPrice) {
         applyEstimateBtn.addEventListener("click", () => {
             const width = widthInput.value;
             const height = heightInput.value;
@@ -321,7 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         {
             id: "img2",
-            src: "Assets/art in the wash basin.png",
+            src: "Assets/Wash basin Art.jpeg",
             cat: "Washbasin & Accent",
             title: "Botanical Basin Accent",
             desc: "Transforming standard utility spaces. Flowing, elegant hand-painted leaves and vines that frame the washbasin with natural grace."
