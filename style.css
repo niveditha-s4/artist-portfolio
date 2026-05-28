@@ -498,7 +498,7 @@ p {
     inset: 0;
     background-image: url("Assets/Lamp art in landscape.png");
     background-size: cover;
-    background-position: calc(100% + 60px) 0px;
+    background-position: calc(100% + 60px) -120px;
     background-repeat: no-repeat;
     z-index: -2;
 }
